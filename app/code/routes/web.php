@@ -22,3 +22,7 @@ Route::resource('games', 'GameController');
 Route::get('/hello', function () {
     return 'create';
 });
+
+Route::get('/shankar', function () {
+    return 'shankarr';
+});
