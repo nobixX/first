@@ -140,9 +140,9 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           # for an approved pull_request, only push pr-specific tags
-          push: true
-          tags: buzzerburger/test:latest
-#           labels: ${{ steps.docker_meta.outputs.labels }}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
       -
         name: Show image digest
         run: echo ${{ steps.docker_build_and_push.outputs.digest }}
