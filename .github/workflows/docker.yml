@@ -1,5 +1,5 @@
 ---
-name: ci__&__cd__pipeline
+name: ciandcd
 
 
 env:
