@@ -26,7 +26,3 @@ Route::get('/hello', function () {
 Route::get('/shankar', function () {
     return 'shankarr';
 });
-
-Route::get('/hell', function () {
-    return 'Nice to meet you';
-});
