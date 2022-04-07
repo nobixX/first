@@ -43,7 +43,6 @@ RUN if [ "$COMPOSER_ENV" = "development" ]; \
 # stackoverflow crap
 
 RUN chmod 777 -R storage bootstrap/cache
-
 RUN chmod -R ugo+rw storage
 
 # RUN php artisan migrate
