@@ -76,7 +76,7 @@ on:
         required: false
 
 jobs:
-  built and test images:
+  builtandtestimages:
     runs-on: ubuntu-latest
     steps:
       -
