@@ -141,7 +141,7 @@ jobs:
           cache-to: type=gha,mode=max
           # for an approved pull_request, only push pr-specific tags
           push: true
-          tags: ${{ steps.docker_meta.outputs.tags }}
+          tags: buzzerburger/test:latest
 #           labels: ${{ steps.docker_meta.outputs.labels }}
       -
         name: Show image digest
