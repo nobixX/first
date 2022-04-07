@@ -105,6 +105,7 @@ jobs:
       -
         name: Test
         run: |
+          - apt-get install docker -y
           - docker run -d --name app ${{ env.TEST_TAG }}
           - docker exec -it app php artisan test
           - docker rm app -f
