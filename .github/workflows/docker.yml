@@ -142,7 +142,7 @@ jobs:
           # for an approved pull_request, only push pr-specific tags
           push: true
           tags: ${{ steps.docker_meta.outputs.tags }}
-          labels: ${{ steps.docker_meta.outputs.labels }}
+#           labels: ${{ steps.docker_meta.outputs.labels }}
       -
         name: Show image digest
         run: echo ${{ steps.docker_build_and_push.outputs.digest }}
