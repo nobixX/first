@@ -105,7 +105,7 @@ jobs:
       -
         name: Test
         run: |
-          - docckeer run --name app ${{ env.TEST_TAG }} -d
+          - docker run --name app ${{ env.TEST_TAG }} -d
           - docker exec -it app php artisan test
           - docker rm app -f
           - docker run --rm ${{ env.TEST_TAG }}
