@@ -18,3 +18,7 @@ Route::get('/', function () {
 });
 
 Route::resource('games', 'GameController');
+
+Route::get('/hello', function () {
+    return 'create';
+});
