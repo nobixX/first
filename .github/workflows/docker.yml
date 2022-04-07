@@ -1,11 +1,6 @@
 ---
 name: ciandcd
 
-
-env:
-  TEST_TAG: user/myapp:test
-
-  
 on:
   # we want pull requests so we can build(test) but not push to image registry
   pull_request:
@@ -80,7 +75,6 @@ jobs:
   laravel-tests:
 
     runs-on: ubuntu-latest
-
     steps:
     - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
       with:
