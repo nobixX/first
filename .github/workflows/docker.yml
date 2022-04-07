@@ -1,6 +1,11 @@
 ---
-name: Build and Push Image
+name: ci && cd
 
+
+env:
+  TEST_TAG: user/myapp:test
+
+  
 on:
   # we want pull requests so we can build(test) but not push to image registry
   pull_request:
@@ -26,13 +31,6 @@ on:
       - 'docker-compose.dev.yml'
       - 'docker-compose.prod.yml'
 
-
-
-  # schedule:
-  #   # re-run montly to keep image fesh with upstream base images
-  #   - cron: '0 12 15 * *'
-
-  
   workflow_dispatch:
     # run whenever we want!
   workflow_call:
@@ -77,23 +75,18 @@ on:
         description: Docker Hub token
         required: false
 
-
 jobs:
-  build-and-push-images:
+  built and test images:
     runs-on: ubuntu-latest
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
       -
-        # we need qemu and buildx so we can build multiple platforms later
         name: Set up QEMU
-        id: qemu
-        uses: docker/setup-qemu-action@v1.2.0
+        uses: docker/setup-qemu-action@v1
       -
-        # BuildKit (used with `docker buildx`) is the best way to build images
         name: Set up Docker Buildx
-        id: buildx
         uses: docker/setup-buildx-action@v1
       -
         name: Login to DockerHub
@@ -102,6 +95,19 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build docker image for test
+        uses: docker/build-push-action@v2
+        with:
+          context: app
+          load: true
+          tags: ${{ env.TEST_TAG }}
+      -
+        name: Test
+        run: |
+          - docker exec -it ${{ env.TEST_TAG }} php artisan test
+          - docker run --rm ${{ env.TEST_TAG }}
+
       -
         name: Login to GHCR
         if: github.event_name != 'pull_request'
@@ -123,6 +129,7 @@ jobs:
             latest=false
           tags: |
             type=raw,value=latest
+
       -
         # this will build the images, once per platform,
         # then push to both Docker Hub and GHCR
@@ -141,8 +148,8 @@ jobs:
           cache-to: type=gha,mode=max
           # for an approved pull_request, only push pr-specific tags
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.docker_meta.outputs.tags }}
-          labels: ${{ steps.docker_meta.outputs.labels }}
+          tags: buzzerburger/test:latest
+          # labels: ${{ steps.docker_meta.outputs.labels }}
       -
         name: Show image digest
         run: echo ${{ steps.docker_build_and_push.outputs.digest }}
