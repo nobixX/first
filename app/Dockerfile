@@ -47,5 +47,7 @@ RUN chmod 777 -R storage bootstrap/cache
 
 RUN chmod -R ugo+rw storage
 
+RUN php artisan migrate
+
 # CMD [ "chmod -R ugo+rw storage" ]
 

@@ -12,6 +12,9 @@ services:
      environment:
         - COMPOSER_ENV=production
 
+     depends_on:
+      - database
+
  nginx:
   volumes:
    - ./app/code:/var/www:ro
