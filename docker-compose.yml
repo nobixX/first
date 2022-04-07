@@ -14,7 +14,7 @@ services:
     depends_on : 
      - database
     #  - networks
-    # command: ["php artisan serve"]
+    command: ["php artisan migrate"]
     networks:
       - demo
 
