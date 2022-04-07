@@ -1,0 +1,45 @@
+version: "3.7"
+services:
+  app:
+    build:
+      args:
+        user: nobi
+        uid: 1000
+      context: ./app
+      dockerfile: Dockerfile
+    image: frontend
+    container_name: app
+    restart: unless-stopped
+    working_dir: /var/www/  
+    networks:
+      - demo
+
+
+  nginx:
+   image: nginx
+   container_name: webserver
+   restart: unless-stopped
+   ports:
+    - 8080:80
+   networks:
+    - demo
+
+  database:
+    image: postgres
+    container_name: database
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: test
+    volumes:
+     - postgres-database:/var/lib/postgresql/data
+    networks:
+      - demo
+volumes:
+ postgres-database:
+
+
+networks:
+  demo:
+    driver: bridge

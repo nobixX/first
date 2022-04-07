@@ -1,0 +1,34 @@
+version: "3.7"
+services:
+
+ app:
+
+    build:
+     args:
+      COMPOSER_ENV : development
+     context: ./app
+     dockerfile: Dockerfile
+
+    volumes:
+     - ./app/code:/var/www
+     - /vendor
+
+    environment:
+     - COMPOSER_ENV=development
+
+ nginx:
+  volumes:
+   - ./app/code:/var/www
+   - ./nginx:/etc/nginx/conf.d:ro
+
+  depends_on:
+   - app
+   - database  
+
+ database:
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: test
+    ports: 
+     - 5430:5432
