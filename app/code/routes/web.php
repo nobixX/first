@@ -35,3 +35,8 @@ Route::get('/finally', function () {
     return 'go to sleep';
 });
 
+Route::get('/fi', function () {
+    return 'go to sleep';
+});
+
+
