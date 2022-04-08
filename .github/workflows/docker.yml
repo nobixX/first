@@ -105,14 +105,14 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      -
-        name: Login to GHCR
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+#       -
+#         name: Login to GHCR
+#         if: github.event_name != 'pull_request'
+#         uses: docker/login-action@v1
+#         with:
+#           registry: ghcr.io
+#           username: ${{ secrets.DOCKERHUB_USERNAME }}
+#           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Docker meta
         id: docker_meta
@@ -127,26 +127,39 @@ jobs:
           tags: |
             type=raw,value=latest
 
-      -
-        # this will build the images, once per platform,
-        # then push to both Docker Hub and GHCR
-        name: Docker Build and Push
-        id: docker_build_and_push
+#     -
+#         # this will build the images, once per platform,
+#         # then push to both Docker Hub and GHCR
+#         name: Docker Build and Push
+#         id: docker_build_and_push
+#         uses: docker/build-push-action@v2
+#         with:
+#           platforms: linux/amd64 
+#           context: app
+#           target: ${{ inputs.target }}
+#           file: ${{ inputs.file }}
+#           builder: ${{ steps.buildx.outputs.name }}
+#           # it uses github cache API for faster builds:
+#           # https://github.com/crazy-max/docker-build-push-action/blob/master/docs/advanced/cache.md#cache-backend-api
+#           cache-from: type=gha
+#           cache-to: type=gha,mode=max
+#           # for an approved pull_request, only push pr-specific tags
+#           push: ${{ github.event_name != 'pull_request' }}
+#           tags: buzzerburger/test:latest
+#           # labels: ${{ steps.docker_meta.outputs.labels }}
+          
+      - name: Build and push
         uses: docker/build-push-action@v2
         with:
-          platforms: linux/amd64 
-          context: app
-          target: ${{ inputs.target }}
-          file: ${{ inputs.file }}
-          builder: ${{ steps.buildx.outputs.name }}
-          # it uses github cache API for faster builds:
-          # https://github.com/crazy-max/docker-build-push-action/blob/master/docs/advanced/cache.md#cache-backend-api
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: user/app:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
           # for an approved pull_request, only push pr-specific tags
           push: ${{ github.event_name != 'pull_request' }}
           tags: buzzerburger/test:latest
-          # labels: ${{ steps.docker_meta.outputs.labels }}
       -
         name: Show image digest
         run: echo ${{ steps.docker_build_and_push.outputs.digest }}
