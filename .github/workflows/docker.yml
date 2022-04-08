@@ -137,6 +137,7 @@ jobs:
         # this will build the images, once per platform,
         # then push to both Docker Hub and GHCR
         name: Docker Build and Push
+        if: ${{ github.event_name != 'pull_request' }}
         id: docker_build_and_push
         uses: docker/build-push-action@v2
         with:
