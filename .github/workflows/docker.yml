@@ -129,8 +129,7 @@ jobs:
           flavor: |
             latest=false
           tags: |
-            type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}
-            type=ref,event=pr,prefix=pr
+            type=raw,value=latest
       -
         # this will build the images, once per platform,
         # then push to both Docker Hub and GHCR
