@@ -153,13 +153,12 @@ jobs:
         with:
           context: .
           platforms: linux/amd64,linux/arm64
-          push: true
-          tags: user/app:latest
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: buzzerburger/test:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
           # for an approved pull_request, only push pr-specific tags
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: buzzerburger/test:latest
+
       -
         name: Show image digest
         run: echo ${{ steps.docker_build_and_push.outputs.digest }}
