@@ -30,3 +30,8 @@ Route::get('/shankar', function () {
 Route::get('/today', function () {
     return 'firstsleeplessnight';
 });
+
+Route::get('/finally', function () {
+    return 'go to sleep';
+});
+
