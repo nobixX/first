@@ -110,7 +110,7 @@ jobs:
         uses: docker/login-action@v1
         with:
           username: ${{ inputs.dockerhub-username }}
-          password: ${{ secrets.dockerhub-token }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       -
         name: Login to GHCR
         uses: docker/login-action@v1
